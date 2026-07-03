@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform
+  name: base
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io/foreground
@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/swanpyaetun/swan_retail-store-sample-app.git
     targetRevision: main
-    path: swan_kubernetes/swan_helm/platform
+    path: swan_kubernetes/swan_helm/base
     helm:
       valueFiles:
         - values.yaml

@@ -15,7 +15,7 @@
   - [4.1. swan_kubernetes/swan_karpenter/ec2nodeclass.yaml](#41-swan_kubernetesswan_karpenterec2nodeclassyaml)
   - [4.2. swan_kubernetes/swan_karpenter/nodepool.yaml](#42-swan_kubernetesswan_karpenternodepoolyaml)
 - [5. Helm](#5-helm)
-  - [5.1. swan_kubernetes/swan_helm/platform/](#51-swan_kubernetesswan_helmplatform)
+  - [5.1. swan_kubernetes/swan_helm/base/](#51-swan_kubernetesswan_helmbase)
   - [5.2. swan_kubernetes/swan_helm/swan_microservices/](#52-swan_kubernetesswan_helmswan_microservices)
 - [6. Argo CD](#6-argo-cd)
   - [6.1. swan_kubernetes/swan_argocd/root-app.yaml](#61-swan_kubernetesswan_argocdroot-appyaml)
@@ -112,9 +112,9 @@ Karpenter does cost-optimization by implementing the following practices:
 
 Helm is used to package Kubernetes manifests into Helm charts.
 
-### 5.1. swan_kubernetes/swan_helm/platform/
+### 5.1. swan_kubernetes/swan_helm/base/
 
-In "platform" Helm chart, "default-deny" network policy, and "allow-dns-access" network policy are created. "default-deny" network policy denies all ingress and egress traffic in the namespace. "allow-dns-access" network policy allows the pods in the namespace to access coredns pods.
+In "base" Helm chart, "default-deny" network policy, and "allow-dns-access" network policy are created. "default-deny" network policy denies all ingress and egress traffic in the namespace. "allow-dns-access" network policy allows the pods in the namespace to access coredns pods.
 
 Security in namespace "otel-demo" is achieved by implementing the following practices:
 1. "default-deny" network policy denies all ingress and egress traffic in the namespace
@@ -170,7 +170,7 @@ The "root" application deploys child resources.
 
 ### 6.2. swan_kubernetes/swan_argocd/swan_argocd_apps/
 
-The "platform" application deploys "platform" Helm chart.
+The "base" application deploys "base" Helm chart.
 <br><br>
 
 The "microservices" applicationset generates multiple Argo CD applications for each microservice Helm chart.
@@ -179,9 +179,9 @@ spec:
   template:
     metadata:
       annotations:
-        argocd.argoproj.io/depends-on: platform
+        argocd.argoproj.io/depends-on: base
 ```
-This ensures "microservices" applications are deployed only after "platform" application is fully deployed.
+This ensures "microservices" applications are deployed only after "base" application is fully deployed.
 <br><br>
 
 Argo CD Image Updater monitors ECR for new container image tags for "microservices" applications. Argo CD Image Updater automatically updates the container image tags defined in the Helm values files in the git repository for each "microservices" application. Argo CD Image Updater uses "git-creds" secret in "argocd" namespace, to be able to push to the git repository.
