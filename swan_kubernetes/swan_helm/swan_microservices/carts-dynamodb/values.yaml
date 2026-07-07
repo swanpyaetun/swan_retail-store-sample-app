@@ -3,10 +3,3 @@
 # Declare variables to be passed into your templates.
 
 namespace: default
-resources:
-  requests:
-    cpu:
-    memory:
-  limits:
-    cpu:
-    memory:

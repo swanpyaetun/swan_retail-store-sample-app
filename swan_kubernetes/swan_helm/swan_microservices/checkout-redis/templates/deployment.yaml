@@ -36,12 +36,3 @@ spec:
             - name: redis
               containerPort: 6379
               protocol: TCP
-          resources:
-            {{- with .Values.resources }}
-            requests:
-              cpu: {{ .requests.cpu }}
-              memory: {{ .requests.memory }}
-            limits:
-              cpu: {{ .limits.cpu }}
-              memory: {{ .limits.memory }}
-            {{- end }}

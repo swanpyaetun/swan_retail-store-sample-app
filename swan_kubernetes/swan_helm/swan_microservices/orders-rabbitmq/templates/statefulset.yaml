@@ -43,15 +43,6 @@ spec:
           volumeMounts:
           - name: data
             mountPath: "/var/lib/rabbitmq/mnesia"
-          resources:
-            {{- with .Values.resources }}
-            requests:
-              cpu: {{ .requests.cpu }}
-              memory: {{ .requests.memory }}
-            limits:
-              cpu: {{ .limits.cpu }}
-              memory: {{ .limits.memory }}
-            {{- end }}
       volumes:
       - name: data
         emptyDir: {}

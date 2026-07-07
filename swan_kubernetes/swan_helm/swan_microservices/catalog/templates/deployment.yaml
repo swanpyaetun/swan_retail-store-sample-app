@@ -64,14 +64,11 @@ spec:
               path: /health
               port: 8080
           resources:
-            {{- with .Values.resources }}
-            requests:
-              cpu: {{ .requests.cpu }}
-              memory: {{ .requests.memory }}
             limits:
-              cpu: {{ .limits.cpu }}
-              memory: {{ .limits.memory }}
-            {{- end }}
+              memory: 256Mi
+            requests:
+              cpu: 256m
+              memory: 256Mi
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
