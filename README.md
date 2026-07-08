@@ -4,7 +4,7 @@
 
 ![](swan_docs/swan_images/architecture_diagram.png)
 
-- Tools used: GitHub Actions, AWS, ECR, EKS, Helm, Argo CD, Argo CD Image Updater, AWS Load Balancer Controller, External DNS, Karpenter
+- Tools used: GitHub Actions, EKS, Karpenter, Argo CD, Kyverno
 - Deploy microservices application to EKS with GitHub Actions and Argo CD
 - Set up 5 GitHub Actions CI/CD pipelines for microservices, which use reusable workflow to build and push Docker images to private ECR repositories
 - Secure GitHub Actions authentication to AWS by using short-lived OIDC tokens with automatic expiration, instead of storing long-lived IAM user credentials in GitHub
@@ -19,6 +19,7 @@
 - Create DNS records in Route 53 public hosted zone with External DNS
 - Enable Argo CD to automatically synchronize with git
 - Monitor ECR for new container image tags, and update the container image tags in the git repository with Argo CD Image Updater
+- Add PSA labels to namespaces with Kyverno mutating policy to enforce baseline Pod Security Standard
 
 ## Table of Contents
 

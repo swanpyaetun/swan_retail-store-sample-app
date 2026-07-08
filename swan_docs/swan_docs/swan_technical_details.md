@@ -14,12 +14,13 @@
 - [4. Karpenter](#4-karpenter)
   - [4.1. swan_kubernetes/swan_karpenter/ec2nodeclass.yaml](#41-swan_kubernetesswan_karpenterec2nodeclassyaml)
   - [4.2. swan_kubernetes/swan_karpenter/nodepool.yaml](#42-swan_kubernetesswan_karpenternodepoolyaml)
-- [5. Helm](#5-helm)
-  - [5.1. swan_kubernetes/swan_helm/base/](#51-swan_kubernetesswan_helmbase)
-  - [5.2. swan_kubernetes/swan_helm/swan_microservices/](#52-swan_kubernetesswan_helmswan_microservices)
-- [6. Argo CD](#6-argo-cd)
-  - [6.1. swan_kubernetes/swan_argocd/root-app.yaml](#61-swan_kubernetesswan_argocdroot-appyaml)
-  - [6.2. swan_kubernetes/swan_argocd/swan_argocd_apps/](#62-swan_kubernetesswan_argocdswan_argocd_apps)
+- [5. Kyverno](#5-kyverno)
+- [6. Helm](#6-helm)
+  - [6.1. swan_kubernetes/swan_helm/base/](#61-swan_kubernetesswan_helmbase)
+  - [6.2. swan_kubernetes/swan_helm/swan_microservices/](#62-swan_kubernetesswan_helmswan_microservices)
+- [7. Argo CD](#7-argo-cd)
+  - [7.1. swan_kubernetes/swan_argocd/root-app.yaml](#71-swan_kubernetesswan_argocdroot-appyaml)
+  - [7.2. swan_kubernetes/swan_argocd/swan_argocd_apps/](#72-swan_kubernetesswan_argocdswan_argocd_apps)
 
 ## 1. AWS
 
@@ -108,11 +109,15 @@ Karpenter does cost-optimization by implementing the following practices:
 2. Consolidating nodes that are idle or underutilized
 3. Replacing with cheaper node
 
-## 5. Helm
+## 5. Kyverno
+
+PSA labels are added to namespaces by Kyverno mutating policy to enforce baseline Pod Security Standard. System namespaces are exempted.
+
+## 6. Helm
 
 Helm is used to package Kubernetes manifests into Helm charts.
 
-### 5.1. swan_kubernetes/swan_helm/base/
+### 6.1. swan_kubernetes/swan_helm/base/
 
 In "base" Helm chart, "default-deny" network policy, and "allow-dns-access" network policy are created. "default-deny" network policy denies all ingress and egress traffic in the namespace. "allow-dns-access" network policy allows the pods in the namespace to access coredns pods.
 
@@ -120,7 +125,7 @@ Security in namespace "otel-demo" is achieved by implementing the following prac
 1. "default-deny" network policy denies all ingress and egress traffic in the namespace
 2. Creating least privilege network policies
 
-### 5.2. swan_kubernetes/swan_helm/swan_microservices/
+### 6.2. swan_kubernetes/swan_helm/swan_microservices/
 
 swan_kubernetes/swan_helm/swan_microservices/ contains 10 Helm charts.
 
@@ -136,7 +141,7 @@ Application is secured by implementing the following practices:
 2. "ui" ingress redirecting http to https
 3. Creating least privilege network policies
 
-## 6. Argo CD
+## 7. Argo CD
 
 Argo CD App-of-Apps pattern is used.
 <br><br>
@@ -164,11 +169,11 @@ spec:
 ```
 This enables Argo CD to automatically synchronize with git. Argo CD validates the manifests before applying. New resources are created first before old resources are pruned.
 
-### 6.1. swan_kubernetes/swan_argocd/root-app.yaml
+### 7.1. swan_kubernetes/swan_argocd/root-app.yaml
 
 The "root" application deploys child resources.
 
-### 6.2. swan_kubernetes/swan_argocd/swan_argocd_apps/
+### 7.2. swan_kubernetes/swan_argocd/swan_argocd_apps/
 
 The "base" application deploys "base" Helm chart.
 <br><br>
