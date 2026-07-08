@@ -2,10 +2,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: base
+  name: kyverno
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/depends-on: kyverno
   finalizers:
   - resources-finalizer.argocd.argoproj.io/foreground
 spec:
@@ -13,10 +11,7 @@ spec:
   source:
     repoURL: https://github.com/swanpyaetun/swan_retail-store-sample-app.git
     targetRevision: main
-    path: swan_kubernetes/swan_helm/base
-    helm:
-      valueFiles:
-        - values.yaml
+    path: swan_kubernetes/swan_kyverno/swan_mutatingpolicy
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

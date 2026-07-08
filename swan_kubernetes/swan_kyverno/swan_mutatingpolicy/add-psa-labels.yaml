@@ -1,0 +1,52 @@
+---
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: add-psa-labels
+spec:
+  evaluation:
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - ""
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - namespaces
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          Object{
+            metadata: Object.metadata{
+              labels: {
+                "pod-security.kubernetes.io/enforce": "baseline",
+                "pod-security.kubernetes.io/warn": "restricted"
+              }
+            }
+          }
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-psa-labels
+  namespace: kyverno
+spec:
+  policyRefs:
+    - name: add-psa-labels
+      kind: MutatingPolicy
+  matchConditions:
+    - name: exclude-system-namespaces
+      expression: >
+        object.metadata.name in [
+          'argocd',
+          'kube-node-lease',
+          'kube-public',
+          'kube-system',
+          'kyverno'
+        ]
