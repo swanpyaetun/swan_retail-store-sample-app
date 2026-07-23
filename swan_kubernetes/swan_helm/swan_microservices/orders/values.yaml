@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: default
+namespace: app
 image:
   repository: 655355946217.dkr.ecr.ap-southeast-1.amazonaws.com/swan_retail-store-sample-app/orders
   tag: 353b6520d6d09e8683dc976c0a130ee83ccb3a8d
