@@ -18,7 +18,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: default
+          kubernetes.io/metadata.name: app
       podSelector:
         matchLabels:
           app.kubernetes.io/name: ui
@@ -27,7 +27,7 @@ spec:
           app.kubernetes.io/owner: retail-store-sample
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: default
+          kubernetes.io/metadata.name: app
       podSelector:
         matchLabels:
           app.kubernetes.io/name: checkout
@@ -41,7 +41,7 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: default
+          kubernetes.io/metadata.name: app
       podSelector:
         matchLabels:
           app.kubernetes.io/name: orders
@@ -54,7 +54,7 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: default
+          kubernetes.io/metadata.name: app
       podSelector:
         matchLabels:
           app.kubernetes.io/name: orders
